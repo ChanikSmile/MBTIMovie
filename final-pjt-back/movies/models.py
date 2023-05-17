@@ -17,6 +17,7 @@ class Movie(models.Model):
     genre_ids = models.TextField()
     backdrop_path = models.TextField()
     adult = models.TextField()
+    id = models.IntegerField(primary_key=True)
 
 # class Comment(models.Model):
 #     article = models.ForeignKey(Article, on_delete=models.CASCADE)
