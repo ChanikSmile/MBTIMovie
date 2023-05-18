@@ -6,13 +6,19 @@ import router from "../router";
 
 import createPersistedState from "vuex-persistedstate";
 
-const API_URL = "http://127.0.0.1:8000";
+const HOME_URL = "http://127.0.0.1:8000";
+
+const API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR";
+const POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR"
+
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
+    newMovieList: [],
+    popularMovieList: [],
     token: null,
   },
   getters: {},
@@ -27,11 +33,45 @@ export default new Vuex.Store({
         router.push({ name: "home" });
       }
     },
+    GET_MOVIES(state, newMovieList) {
+      state.newMovieList = newMovieList
+    },
+    GET_POPULAR_MOVIES(state, popularMovieList) {
+      state.popularMovieList = popularMovieList
+    },
   },
   actions: {
+    // 최신영화 가져오기!
+    getMovies(context) {
+      axios({
+        method: "get",
+        language: "ko-KR",
+        url: API_URL,
+      })
+        .then((res) => {
+          context.commit('GET_MOVIES', res.data.results)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 인기영화 가져오기!
+    getPopularMovies(context) {
+      axios({
+        method: "get",
+        url: POPULAR_URL,
+      })
+        .then((res) => {
+          context.commit('GET_POPULAR_MOVIES', res.data.results)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     signUp(context, payload) {
       const username = payload.username;
-      const password1 = payload.password1;
+      const password = payload.password;
       const password2 = payload.password2;
       const name = payload.name;
       const mbtis = payload.mbtis;
@@ -39,10 +79,10 @@ export default new Vuex.Store({
 
       axios({
         method: "post",
-        url: `${API_URL}/accounts/signup/`,
+        url: `${HOME_URL}/accounts/signup/`,
         data: {
           username,
-          password1,
+          password,
           password2,
           name,
           mbtis,
@@ -65,7 +105,7 @@ export default new Vuex.Store({
       const password = payload.password;
       axios({
         method: "post",
-        url: `${API_URL}/accounts/login/`,
+        url: `${HOME_URL}/auth/login/`,
         data: {
           username,
           password,

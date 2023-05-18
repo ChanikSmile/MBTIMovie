@@ -17,6 +17,7 @@
 <script>
 
 export default {
+  name: "LoginView",
   data() {
     return {
       username: null,
