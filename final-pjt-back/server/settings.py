@@ -89,6 +89,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'server.wsgi.application'
 
+REST_FRAMEWORK = {
+    # Authentication
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+
+    # permission
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+
+REST_AUTH = { # 회원가입시 토큰 발급
+    'SESSION_LOGIN': False,
+}
+
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
