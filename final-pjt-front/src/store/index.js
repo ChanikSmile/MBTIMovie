@@ -71,7 +71,7 @@ export default new Vuex.Store({
 
     signUp(context, payload) {
       const username = payload.username;
-      const password1 = payload.password1;
+      const password = payload.password;
       const password2 = payload.password2;
       const name = payload.name;
       const mbtis = payload.mbtis;
@@ -82,7 +82,7 @@ export default new Vuex.Store({
         url: `${HOME_URL}/accounts/signup/`,
         data: {
           username,
-          password1,
+          password,
           password2,
           name,
           mbtis,
@@ -105,7 +105,7 @@ export default new Vuex.Store({
       const password = payload.password;
       axios({
         method: "post",
-        url: `${HOME_URL}/accounts/login/`,
+        url: `${HOME_URL}/auth/login/`,
         data: {
           username,
           password,
