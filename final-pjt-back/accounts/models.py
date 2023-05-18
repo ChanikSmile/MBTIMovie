@@ -3,4 +3,6 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    pass
+    mbtis = models.CharField(max_length=10)
+    genders = models.CharField(max_length=10)
+    

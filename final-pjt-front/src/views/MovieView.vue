@@ -11,7 +11,7 @@ import MovieCard1 from '@/components/MovieCard1.vue'
 import MovieCard2 from '@/components/MovieCard2.vue'
 
 export default {
-  name: 'movieView',
+  name: 'MovieView',
   methods: {
     getMovies() {
       this.$store.dispatch('getMovies')
