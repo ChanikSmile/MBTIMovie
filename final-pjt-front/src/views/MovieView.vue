@@ -1,28 +1,39 @@
 <template>
   <div class="justify-content-center">
-    <MovieCard />
+    <MovieCard1 />
+    <hr>
+    <MovieCard2 />
   </div>
 </template>
 
 <script>
-import MovieCard from '@/components/MovieCard.vue'
+import MovieCard1 from '@/components/MovieCard1.vue'
+import MovieCard2 from '@/components/MovieCard2.vue'
 
 export default {
   name: 'movieView',
   methods: {
     getMovies() {
       this.$store.dispatch('getMovies')
+    },
+    getPopularMovies() {
+      this.$store.dispatch('getPopularMovies')
     }
   },
   components: {
-    MovieCard
+    MovieCard1,
+    MovieCard2
   },
   created() {
     this.getMovies();
+    this.getPopularMovies();
   },
   computed: {
-    movieList() {
-      return this.$store.state.movieList
+    newMovieList() {
+      return this.$store.state.newMovieList
+    },
+    popularMovieList() {
+      return this.$store.state.popularMovieList
     }
   }
 }
