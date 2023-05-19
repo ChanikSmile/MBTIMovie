@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Comment, Community_comment
+from .models import Movie, Comment, Community, Community_comment
 
 
 class Movie2(serializers.ModelSerializer):
@@ -20,11 +20,15 @@ class CommentListSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('title', 'content')
         
+class CommunityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Community
+        fields = '__all__'
+
 class CommunityCommentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Community_comment
         fields = '__all__'
-    
 
 class MovieSerializer(serializers.ModelSerializer):
     comment_set = CommentListSerializer(many=True, read_only=True)
@@ -41,9 +45,18 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('id', 'movie', 'title', 'content',)
 
-
 class CommunityCommentSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Community_comment
         fields = '__all__'
+        read_only_fields = ('community',)
+
+class CommunitySerializer(serializers.ModelSerializer):
+    comment_set = CommunityCommentSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Community
+        fields = '__all__'
+    
+    
