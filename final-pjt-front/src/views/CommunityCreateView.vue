@@ -32,9 +32,11 @@ export default {
     createCommunity() {
       const title = this.title
       const content = this.content
-      const token = localStorage
-      console.log(token)
-
+      const storedData = localStorage.getItem("vuex");
+      const token = JSON.parse(storedData).token;
+      const user = "1"
+      const community_user_like = ["1"]
+      console.log(storedData)
       if (!title) {
         alert('제목 입력해주세요')
         return
@@ -45,14 +47,17 @@ export default {
       axios({
         method: 'post',
         url: `${API_URL}/api/v1/community/`,
-        data: { title, content},
+        data: { title, content, user, community_user_like},
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
-      .then(() => {
-        // console.log(res)
+      .then((res) => {
+        console.log(res)
         this.$router.push({name: 'CommunityView'})
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err.response)
       })
     }
   }
