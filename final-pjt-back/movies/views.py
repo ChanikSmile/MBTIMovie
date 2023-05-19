@@ -76,7 +76,7 @@ def community_list(request):
 @permission_classes([IsAuthenticated])
 def community_detail(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)
-    print(request)
+    print(request.user)
     
     if request.method == "GET":
         comments = community.comments.all()
