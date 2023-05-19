@@ -10,26 +10,18 @@ const HOME_URL = "http://127.0.0.1:8000";
 
 const API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR";
 const POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR"
-const COM_API_URL = 'http://127.0.0.1:8000'
+
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [createPersistedState({
-    paths: ["newMovieList", "communitys", "popularMovieList", "token"],
-    })
-  ],
+  plugins: [createPersistedState()],
   state: {
     newMovieList: [],
     popularMovieList: [],
     token: null,
-    communitys: [],
   },
-  getters: {
-    isLogin(state) {
-      return state.token ? true : false
-    }
-  },
+  getters: {},
   mutations: {
     // SIGN_UP(state, token){
     //   state.token = token
@@ -37,7 +29,7 @@ export default new Vuex.Store({
     SAVE_TOKEN(state, token) {
       if (router.currentRoute.path !== "/") {
         state.token = token;
-        // console.log(state.token);
+        console.log(state.token);
         router.push({ name: "home" });
       }
     },
@@ -47,9 +39,6 @@ export default new Vuex.Store({
     GET_POPULAR_MOVIES(state, popularMovieList) {
       state.popularMovieList = popularMovieList
     },
-    GET_COMMUNITY(state, communitys) {
-      state.communitys = communitys
-    }
   },
   actions: {
     // 최신영화 가져오기!
@@ -73,6 +62,7 @@ export default new Vuex.Store({
         url: POPULAR_URL,
       })
         .then((res) => {
+          //console.log(res.data.results)
           context.commit('GET_POPULAR_MOVIES', res.data.results)
         })
         .catch((err) => {
@@ -103,7 +93,7 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res.data);
           //context.commit('SIGN_UP', res.data.key)
-          context.commit("SAVE_TOKEN", res.data.access);
+          context.commit("SAVE_TOKEN", res.data.key);
           console.log("잘들어갔음!");
         })
         .catch((err) => {
@@ -123,9 +113,7 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          context.commit("SAVE_TOKEN", res.data.access);
-          // context.commit("SAVE_USER", res.data)
-          // console.log(res.data.access)
+          context.commit("SAVE_TOKEN", res.data.key);
           console.log("로그인 성공!");
         })
         .catch((err) => {
@@ -133,20 +121,6 @@ export default new Vuex.Store({
           console.log("실패...");
         });
     },
-
-    getCommunity(context) {
-      axios({
-        method: 'get',
-        url: `${COM_API_URL}/api/v1/community/`,
-      })
-        .then((res) => {
-        // console.log(res, context)
-          context.commit('GET_COMMUNITY', res.data)
-        })
-        .catch((err) => {
-        console.log(err)
-      })
-    }
   },
   modules: {},
 });
