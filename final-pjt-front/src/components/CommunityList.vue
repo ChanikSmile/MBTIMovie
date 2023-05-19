@@ -1,6 +1,6 @@
 <template>
   <div class="community-list">
-    <h3>Article List</h3>
+    <h3>Community List</h3>
     <CommunityListItem 
     v-for="community in communitys" :key="community.id" :community="community"
     />

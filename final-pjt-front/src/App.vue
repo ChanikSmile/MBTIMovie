@@ -12,6 +12,9 @@
         <router-link :to="{ name: 'login' }">로그인</router-link> |
       </b-nav-item>
       <b-nav-item>
+        <router-link :to="{ name: 'community' }">커뮤니티</router-link> |
+      </b-nav-item>
+      <b-nav-item>
         <router-link to="/signup">회원가입</router-link>
       </b-nav-item>
     </b-navbar>
