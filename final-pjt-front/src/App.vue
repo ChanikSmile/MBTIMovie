@@ -4,6 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/movie">Movie</router-link> |
       <router-link :to="{name: 'login'}">로그인</router-link> |
+      <router-link :to="{name: 'community'}">커뮤니티</router-link> |
       <router-link to="/signup">회원가입</router-link>
     </nav>
     <router-view/>
