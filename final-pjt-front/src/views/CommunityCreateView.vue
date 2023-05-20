@@ -54,7 +54,7 @@ export default {
       })
       .then((res) => {
         console.log(res)
-        this.$router.push({name: 'CommunityView'})
+        this.$router.push({name: 'community'})
       })
       .catch((err) => {
         console.log(err.response)
