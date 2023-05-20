@@ -20,8 +20,14 @@ export default new Vuex.Store({
     newMovieList: [],
     popularMovieList: [],
     token: null,
+    user_info: [],
+    communitys: []
   },
-  getters: {},
+  getters: {
+    isLogin(state) {
+      return state.token ? true : false
+    }
+  },
   mutations: {
     // SIGN_UP(state, token){
     //   state.token = token
@@ -38,6 +44,14 @@ export default new Vuex.Store({
     },
     GET_POPULAR_MOVIES(state, popularMovieList) {
       state.popularMovieList = popularMovieList
+    },
+    GET_COMMUNITY(state, communitys) {
+      state.communitys = communitys
+    },
+    GET_USER_INFO(state, user_info){
+      state.user_info = user_info
+      // console.log('1')
+      // console.log(state.user_info)
     },
   },
   actions: {
@@ -93,7 +107,7 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res.data);
           //context.commit('SIGN_UP', res.data.key)
-          context.commit("SAVE_TOKEN", res.data.key);
+          context.commit("SAVE_TOKEN", res.data.access);
           console.log("잘들어갔음!");
         })
         .catch((err) => {
@@ -113,14 +127,44 @@ export default new Vuex.Store({
         },
       })
         .then((res) => {
-          context.commit("SAVE_TOKEN", res.data.key);
+          context.commit("SAVE_TOKEN", res.data.access);
           console.log("로그인 성공!");
+          const token = res.data.access
+          // console.log('-----')
+          // console.log(token)
+          axios({
+            method: 'get',
+            url: `${HOME_URL}/accounts/profile/`,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          })
+          .then((response) => {
+            // console.log(response.data)
+            context.commit('GET_USER_INFO', response.data)
+            // console.log(response.data)
+            // console.log('1')
+            // console.log(this.user_info)
+          })
         })
         .catch((err) => {
           console.log(err);
           console.log("실패...");
         });
     },
+    getCommunity(context) {
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/api/v1/community/`,
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // }
+      })
+        .then((response) => {
+          context.commit('GET_COMMUNITY',response.data)
+          // console.log(response)
+        })
+    }
   },
   modules: {},
 });

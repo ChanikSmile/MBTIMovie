@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex'
 const API_URL = 'http://127.0.0.1:8000'
 
 export default {
@@ -26,7 +27,8 @@ export default {
   computed:{
     isLogin() {
       return this.$store.getters.isLogin // 로그인 여부
-    }
+    },
+    ...mapState(['user_info'])
   },
   methods: {
     createCommunity() {
@@ -34,9 +36,8 @@ export default {
       const content = this.content
       const storedData = localStorage.getItem("vuex");
       const token = JSON.parse(storedData).token;
-      const user = "1"
+      const user = this.user_info[0].user_id
       const community_user_like = ["1"]
-      console.log(storedData)
       if (!title) {
         alert('제목 입력해주세요')
         return
@@ -54,7 +55,7 @@ export default {
       })
       .then((res) => {
         console.log(res)
-        this.$router.push({name: 'CommunityView'})
+        this.$router.push({name: 'community'})
       })
       .catch((err) => {
         console.log(err.response)
