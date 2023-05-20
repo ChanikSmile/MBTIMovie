@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 style="text-align: left; color: white; margin-left: 30px;">페르소나 최신 작품을 만나보세요!</h1>
+    <h1 style="text-align: left; color: white; margin-left: 30px">
+      페르소나 최신 작품을 만나보세요!
+    </h1>
     <div id="carouselNowPlaying" class="carousel slide" data-bs-ride="carousel">
       <ol class="carousel-indicators">
         <li
