@@ -15,12 +15,7 @@ export default {
   components: {
     CommunityList,
   },
-  
-  computed:{
-    isLogin() {
-      return this.$store.getters.isLogin // 로그인 여부
-    }
-  },
+
   methods: {
     getCommunity() {
       this.$store.dispatch('getCommunity')
