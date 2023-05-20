@@ -26,15 +26,15 @@
       <b-form-group id="input-group-2" label="비밀번호" label-for="input-2">
         <b-form-input
           id="input-2"
-          v-model="password1"
+          v-model="password"
           placeholder="Enter Password"
-          :state="password1State"
-          aria-descibedby="input-password1-feedback"
+          :state="passwordState"
+          aria-descibedby="input-password-feedback"
           trim
           type="password"
         ></b-form-input>
         <b-form-invalid-feedback
-          id="input-password1-feedback"
+          id="input-password-feedback"
           class="text-right"
         >
           비밀번호는 최소 8자리 이상입니다.
@@ -102,11 +102,12 @@
 <script>
 
 export default {
+  name: "SignUpView",
   data() {
     return {
       username: "",
       name: "",
-      password1: "",
+      password: "",
       password2: "",
       gender: "",
       genders: ["Male", "Female"],
@@ -119,13 +120,13 @@ export default {
     signup() {
       const username = this.username;
       const name = this.name;
-      const password1 = this.password1;
+      const password = this.password;
       const password2 = this.password2;
       const genders = this.gender;
       const mbtis = this.mbti
 
       const payload = {
-        username, name, password1, password2, genders, mbtis
+        username, name, password, password2, genders, mbtis
       }
 
       this.$store.dispatch('signUp', payload)
@@ -138,7 +139,7 @@ export default {
       // Reset our form values
       this.username = "";
       this.name = "";
-      this.password1 = "";
+      this.password = "";
       this.password2 = "";
       // Trick to reset/clear native browser form validation state
       this.show = false;
@@ -151,11 +152,11 @@ export default {
     idState() {
       return this.username.length >= 3 ? true : false;
     },
-    password1State() {
-      return this.password1.length >= 8 ? true : false;
+    passwordState() {
+      return this.password.length >= 8 ? true : false;
     },
     password2State() {
-      return this.password1 === this.password2 ? true : false;
+      return this.password === this.password2 ? true : false;
     },
   },
 };
