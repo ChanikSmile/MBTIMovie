@@ -19,6 +19,7 @@ class Movie(models.Model):
     backdrop_path = models.TextField()
     adult = models.TextField()
     # movie_id = models.IntegerField()
+    
 class Comment(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()

@@ -47,7 +47,12 @@ export default new Vuex.Store({
     },
     GET_COMMUNITY(state, communitys) {
       state.communitys = communitys
-    }
+    },
+    GET_USER_INFO(state, user_info){
+      state.user_info = user_info
+      // console.log('1')
+      // console.log(state.user_info)
+    },
   },
   actions: {
     // 최신영화 가져오기!
@@ -135,9 +140,11 @@ export default new Vuex.Store({
             }
           })
           .then((response) => {
-            this.user_info = response.data
-            console.log('1')
-            console.log(this.user_info)
+            // console.log(response.data)
+            context.commit('GET_USER_INFO', response.data)
+            // console.log(response.data)
+            // console.log('1')
+            // console.log(this.user_info)
           })
         })
         .catch((err) => {
@@ -150,7 +157,7 @@ export default new Vuex.Store({
         method: 'get',
         url: `${HOME_URL}/api/v1/community/`,
         // headers: {
-        //   Authorization: `Bearer ${this.token}`,
+        //   Authorization: `Bearer ${token}`,
         // }
       })
         .then((response) => {

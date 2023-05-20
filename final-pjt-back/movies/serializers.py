@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Comment, Community, Community_comment
-
+from accounts.serializers import UserSerializer
 
 class Movie2(serializers.ModelSerializer):
     class Meta:
@@ -46,10 +46,11 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'movie', 'title', 'content',)
 
 class CommunityCommentSerializer(serializers.ModelSerializer):
-
+    user = UserSerializer(read_only=True)
+    
     class Meta:
         model = Community_comment
-        fields = '__all__'
+        fields = ('user', 'content')
         read_only_fields = ('community',)
 
 class CommunitySerializer(serializers.ModelSerializer):
