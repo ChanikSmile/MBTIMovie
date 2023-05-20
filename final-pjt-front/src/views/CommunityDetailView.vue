@@ -68,11 +68,12 @@ export default {
       const commentContent = this.newCommentContent;
       const communityId = this.community.id;
       const user_id = this.user_info[0].user_id
-      const username = this.user_info[0].username
+
+      console.log(user_id)
       axios({
         method: 'post',
         url: `${API_URL}/api/v1/community/${communityId}/`,
-        data: { content: commentContent, user:user_id, username:username},
+        data: { content: commentContent, user:user_id},
         headers: {
           Authorization: `Bearer ${token}`,
         },

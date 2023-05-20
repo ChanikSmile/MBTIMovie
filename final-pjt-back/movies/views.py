@@ -7,7 +7,7 @@ from rest_framework import status
 
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_POST, require_GET
-
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -76,7 +76,6 @@ def community_list(request):
 @permission_classes([IsAuthenticated])
 def community_detail(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)
-    print(request.user)
     
     if request.method == "GET":
         comments = community.comments.all()
@@ -99,11 +98,12 @@ def community_detail(request, community_pk):
             return Response(serializer.data)
 
     elif request.method == "POST":
+        user = get_user_model().objects.get(username=request.user)
+        
         serializer = CommunityCommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(community=community)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+            serializer.save(community=community, user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 # @api_view(['GET', 'POST'])
 # def create_community(request):
