@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 style="text-align: left; color: white; margin-left: 30px;">페르소나 최고 인기작</h1>
+    <h1 style="text-align: left; color: white; margin-left: 30px">
+      페르소나 최고 인기작
+    </h1>
     <div
       id="carouselPopularPlaying"
       class="carousel slide"
