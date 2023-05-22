@@ -34,7 +34,7 @@ export default {
     createCommunity() {
       const title = this.title
       const content = this.content
-      const storedData = localStorage.getItem("vuex");
+      const storedData = sessionStorage.getItem("vuex");
       const token = JSON.parse(storedData).token;
       const user = this.user_info[0].user_id
       const community_user_like = ["1"]

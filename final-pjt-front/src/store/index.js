@@ -15,7 +15,9 @@ const POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=a51700c7
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    storage: window.sessionStorage // store를 session storage에 유지
+})],
   state: {
     newMovieList: [],
     popularMovieList: [],
@@ -50,8 +52,15 @@ export default new Vuex.Store({
     },
     GET_USER_INFO(state, user_info){
       state.user_info = user_info
+      console.log(user_info)
       // console.log('1')
       // console.log(state.user_info)
+    },
+
+    LOGOUT(state) {
+      state.token = null;
+      state.user_info = [];
+      router.push({ name: "login" });
     },
   },
   actions: {
@@ -118,6 +127,7 @@ export default new Vuex.Store({
     login(context, payload) {
       const username = payload.username;
       const password = payload.password;
+      
       axios({
         method: "post",
         url: `${HOME_URL}/auth/login/`,
@@ -129,29 +139,40 @@ export default new Vuex.Store({
         .then((res) => {
           context.commit("SAVE_TOKEN", res.data.access);
           console.log("로그인 성공!");
-          const token = res.data.access
-          // console.log('-----')
-          // console.log(token)
+          const token = res.data.access;
+          const user_pk = res.data.user.pk
+    
+          // 사용자 정보 가져오는 API 요청 수정
           axios({
             method: 'get',
             url: `${HOME_URL}/accounts/profile/`,
             headers: {
               Authorization: `Bearer ${token}`,
+            },
+            params: {
+              user_pk: user_pk
             }
           })
-          .then((response) => {
-            // console.log(response.data)
-            context.commit('GET_USER_INFO', response.data)
-            // console.log(response.data)
-            // console.log('1')
-            // console.log(this.user_info)
-          })
+            .then((response) => {
+              context.commit('GET_USER_INFO', response.data)
+              console.log('사용자 정보:', response.data);
+
+            })
+            .catch((err) => {
+              console.log(err);
+              console.log("사용자 정보 가져오기 실패...");
+            });
         })
         .catch((err) => {
           console.log(err);
-          console.log("실패...");
+          console.log("로그인 실패...");
         });
     },
+
+    logout(context) {
+      context.commit("LOGOUT");
+    },
+
     getCommunity(context) {
       axios({
         method: 'get',
@@ -164,6 +185,12 @@ export default new Vuex.Store({
           context.commit('GET_COMMUNITY',response.data)
           // console.log(response)
         })
+    },
+
+    likeCommunity(context, payload) {
+      this.communitys = payload.communitys
+      this.communitys.id = payload.communityId
+      
     }
   },
   modules: {},

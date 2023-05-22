@@ -72,7 +72,7 @@ def community_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # @login_required # 로그인된 사용자만 접근할 수 있도록 설정
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def community_detail(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)
@@ -92,18 +92,22 @@ def community_detail(request, community_pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     elif request.method == "PUT":
+        user = get_user_model().objects.get(username=request.user)
+        
         serializer = CommunitySerializer(community, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            serializer.save(community=community, user=user)
             return Response(serializer.data)
 
     elif request.method == "POST":
         user = get_user_model().objects.get(username=request.user)
         
         serializer = CommunityCommentSerializer(data=request.data)
+
         if serializer.is_valid(raise_exception=True):
             serializer.save(community=community, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
     
 # @api_view(['GET', 'POST'])
 # def create_community(request):
@@ -140,11 +144,24 @@ def community_likes(request, community_pk):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 	return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['GET','DELETE'])
+@api_view(['GET','DELETE', 'PUT'])
 def community_comment_delete(request, community_pk, comment_pk):
+    community = get_object_or_404(Community, pk=community_pk)
     comment = get_object_or_404(Community_comment, pk=comment_pk, community_id=community_pk)
     if request.method == "GET":
         serializer = CommunityCommentSerializer(comment)
         return Response(serializer.data)
-    comment.delete()
+    
+    elif request.method == 'DELETE':
+        comment.delete()
+    
+    elif request.method == "PUT":
+        user = get_user_model().objects.get(username=request.user)
+        print(user)
+        serializer = CommunityCommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(community=community, user=user)
+            return Response(serializer.data)
+        return Response(status=status.HTTP_200_OK)
+
     return Response(status=status.HTTP_204_NO_CONTENT)

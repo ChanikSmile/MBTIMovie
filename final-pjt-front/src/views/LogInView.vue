@@ -24,6 +24,11 @@ export default {
       password: null,
     }
   },
+  computed: {
+    isLogin() {
+      return this.$store.getters.isLogin;
+    }
+  },
   methods: {
     login() {
       const username = this.username
@@ -34,7 +39,10 @@ export default {
       }
 
       this.$store.dispatch('login',payload)
-    }
+    },
+  logout() {
+    this.$store.dispatch('logout')
+  }
   }
 }
 </script>
