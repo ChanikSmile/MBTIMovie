@@ -114,4 +114,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+h6 {
+  color: white;
+}
+</style>

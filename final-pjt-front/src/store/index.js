@@ -35,10 +35,10 @@ export default new Vuex.Store({
     //   state.token = token
     // },
     SAVE_TOKEN(state, token) {
-      if (router.currentRoute.path !== "/") {
+      if (router.currentRoute.path !== "/movie") {
         state.token = token;
         console.log(state.token);
-        router.push({ name: "home" });
+        router.push({ name: "movie" });
       }
     },
     GET_MOVIES(state, newMovieList) {
@@ -162,7 +162,7 @@ export default new Vuex.Store({
         // }
       }).then((response) => {
         context.commit("GET_COMMUNITY", response.data);
-        // console.log(response)
+        console.log(response)
       });
     },
   },

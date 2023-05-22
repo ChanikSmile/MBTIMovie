@@ -46,6 +46,13 @@
               </button>
             </div>
           </div>
+          <div class="movie-detail-lower">
+            <div class="movie-youtube-area">
+              이 영화를 한 문장으로 표현한다면?
+              <hr />
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -140,6 +147,7 @@ export default {
   min-height: 100%;
   height: auto;
   background-color: #000000;
+  color: white;
 }
 
 .movie-detail-toolbar {
