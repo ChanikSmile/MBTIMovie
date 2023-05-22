@@ -6,7 +6,6 @@
           <img :src="getImageUrl(movie.poster_path)" :alt="movie.title" />
         </div>
         <div class="movie-detail-info">
-          <!-- info header -->
           <div class="movie-detail-upper">
             <div class="movie-detail-info-header">
               <div class="movie-detail-info-header-left">
@@ -50,7 +49,6 @@
             <div class="movie-youtube-area">
               이 영화를 한 문장으로 표현한다면?
               <hr />
-              
             </div>
           </div>
         </div>
