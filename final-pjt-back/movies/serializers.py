@@ -21,9 +21,12 @@ class CommentListSerializer(serializers.ModelSerializer):
         fields = ('title', 'content')
         
 class CommunityListSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    
     class Meta:
         model = Community
         fields = '__all__'
+        read_only_fields = ('user',)
 
 class CommunityCommentListSerializer(serializers.ModelSerializer):
     class Meta:

@@ -66,13 +66,14 @@ def community_list(request):
         serializer = CommunityListSerializer(community_lists, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
+        user = get_user_model().objects.get(username=request.user)
         serializer = CommunitySerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 # @login_required # 로그인된 사용자만 접근할 수 있도록 설정
-@api_view(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def community_detail(request, community_pk):
     community = get_object_or_404(Community, pk=community_pk)

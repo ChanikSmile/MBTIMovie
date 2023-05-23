@@ -16,6 +16,7 @@ def signup(request):
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
 	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 def get_accounts(request):
     User = get_user_model()
     user_pk = request.GET.get('user_pk')

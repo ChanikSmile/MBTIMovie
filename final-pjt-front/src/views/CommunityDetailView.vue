@@ -20,7 +20,6 @@
     <p>내용: {{ community?.content }}</p>
     <p>작성시간: {{ community?.created_at }}</p>
     <p>수정시간: {{ community?.updated_at }}</p>
-    <p>{{ community }}</p>
 
     <button @click="editing = true" v-if="isCurrentUser(community?.user)">수정</button>
   </template>

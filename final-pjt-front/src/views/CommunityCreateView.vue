@@ -37,6 +37,8 @@ export default {
       const storedData = sessionStorage.getItem("vuex");
       const token = JSON.parse(storedData).token;
       const user = this.user_info[0].user_id
+      // const username = this.user_info[0].username
+      console.log(this.user_info[0])
       const community_user_like = ["1"]
       if (!title) {
         alert('제목 입력해주세요')
