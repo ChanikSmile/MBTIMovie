@@ -82,7 +82,6 @@ export default {
   position: absolute;
   top: 50%;
   width: 100%;
-  background-color: transparent;
 }
 
 .jb-text p {
@@ -91,7 +90,6 @@ export default {
   text-align: left;
   font-size: 40px;
   color: #ffffff;
-  background-color: transparent;
 }
 
 .mainVideo {

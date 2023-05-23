@@ -18,16 +18,20 @@ def signup(request):
 
 def get_accounts(request):
     User = get_user_model()
+    user_pk = request.GET.get('user_pk')
+    print(user_pk)
     users = User.objects.all()
+    # print(request.user_pk)
 
     data = []
     for user in users:
-        data.append({
-            'username': user.username,
-            'user_id': user.pk,
-            'genders': user.genders,  # 새로운 필드
-            'mbtis': user.mbtis,  # 새로운 필드
-        })
+        if int(user.pk) == int(user_pk):
+            data.append({
+                'username': user.username,
+                'user_id': user.pk,
+                'genders': user.genders,  # 새로운 필드
+                'mbtis': user.mbtis,  # 새로운 필드
+            })
 
     return JsonResponse(data, safe=False)
 

@@ -50,7 +50,7 @@ class CommunityCommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Community_comment
-        fields = ('user', 'content')
+        fields = ('user', 'content', 'id')
         read_only_fields = ('community', 'user')
 
 class CommunitySerializer(serializers.ModelSerializer):
