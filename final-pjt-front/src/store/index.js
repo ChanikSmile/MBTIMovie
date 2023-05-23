@@ -184,6 +184,11 @@ export default new Vuex.Store({
         console.log(response)
       });
     },
+    // likeCommunity(context, payload) {
+    //   this.communitys = payload.communitys
+    //   this.communitys.id = payload.communityId
+      
+    // },
   },
   modules: {},
 });
