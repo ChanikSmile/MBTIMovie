@@ -21,8 +21,7 @@ class Movie(models.Model):
     # movie_id = models.IntegerField()
     
 class Comment(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+    content = models.CharField(max_length=100)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     

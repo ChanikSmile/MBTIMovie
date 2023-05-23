@@ -49,6 +49,18 @@
             <div class="movie-youtube-area">
               이 영화를 한 문장으로 표현한다면?
               <hr />
+              <form @submit.prevent="createComment" @keyup.enter="createComment">
+                <textarea
+                  v-model="comment"
+                  id="content"
+                  cols="80"
+                  rows="1"
+                ></textarea>
+                <input type="submit" id="submit" />
+              </form>
+            </div>
+            <div v-for="comment in movieComment" :key="comment.id">
+              <p v-if="comment.movie === movie.id">{{ comment.content }}</p>
             </div>
           </div>
         </div>
@@ -81,19 +93,31 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 
 const API_URL = "https://api.themoviedb.org/3/movie";
+const COMMENT_URL = "http://127.0.0.1:8000/api/v1";
 
 export default {
   name: "MovieDetail",
   created() {
     this.getMovieDetail();
+    this.getComment();
   },
   data() {
     return {
       movie: "",
       movieVideo: "",
+      comment: "",
+      movieComment: [],
     };
+  },
+  computed: {
+    ...mapState(["token"]),
+    ...mapState(["user_info"]),
+    isLogin() {
+      return this.$store.getters.isLogin // 로그인 여부
+    },
   },
   methods: {
     getMovieDetail() {
@@ -126,6 +150,48 @@ export default {
           const videoKey = res.data.results[0].key;
           this.movieVideo = "https://www.youtube.com/embed/" + videoKey;
           //console.log(this.movieVideo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    createComment() {
+      const content = this.comment;
+      const token = this.token;
+      const user_id = this.user_info[0].user_id;
+      axios({
+        method: "post",
+        url: `${COMMENT_URL}/movies/${this.$route.params.id}/comments/`,
+        data: {
+          content,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          console.log("잘들어갔지요~");
+          if (this.$route.name !== "MovieDetail") {
+            this.$router.push({ name: "MovieDetail" });
+          }
+          this.getComment()
+          this.comment = ""
+        })
+        .catch((err) => {
+          console.log(err);
+          console.log(user_id);
+        });
+    },
+    getComment() {
+      axios({
+        method: "get",
+        url: `${COMMENT_URL}/movies/${this.$route.params.id}/comments/`,
+      })
+        .then((res) => {
+          console.log("조찬익", res);
+           this.movieComment = res.data.filter((comment) => comment.movie === this.movie.id);
+            
         })
         .catch((err) => {
           console.log(err);
