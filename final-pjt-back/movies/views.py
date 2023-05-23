@@ -53,11 +53,17 @@ def comment_detail(request, comment_pk):
     
 @api_view(['GET', 'POST'])
 def create_comment(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    serializer = CommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    movie = Movie.objects.get(pk=movie_pk)
+    if request.method == "GET":
+        comments_lists = Comment.objects.all()
+        serializer = CommentListSerializer(comments_lists, many=True)
+        return Response(serializer.data)
+    if request.method == "POST":
+        user = get_user_model().objects.get(username=request.user)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(movie=movie, user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
 def community_list(request):

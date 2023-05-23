@@ -26,6 +26,7 @@ export default new Vuex.Store({
     token: null,
     user_info: [],
     communitys: [],
+    movieComments: [],
   },
   getters: {
     isLogin(state) {
@@ -184,6 +185,7 @@ export default new Vuex.Store({
         console.log(response)
       });
     },
+
   },
   modules: {},
 });
