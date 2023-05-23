@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="community">
+    <header>
     <h1>Community Page</h1>
-    <router-link :to="{name: 'CommunityCreateView'}">[CREATE]</router-link>
+    </header>
     <CommunityList />
-    <hr>
   </div>
 </template>
 
@@ -36,5 +36,18 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  color: #ffffff;
+  background-color: black;
+}
 
+.community {
+  width: 100%;
+  margin-top: 5rem;
+  padding: 0 3rem;
+  display: flex;
+  flex-direction: column;
+}
 </style>

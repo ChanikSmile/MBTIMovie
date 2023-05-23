@@ -6,11 +6,13 @@ import router from "../router";
 
 import createPersistedState from "vuex-persistedstate";
 
+
 const HOME_URL = "http://127.0.0.1:8000";
 
-const API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR";
-const POPULAR_URL = "https://api.themoviedb.org/3/movie/popular?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR"
-
+const API_URL =
+  "https://api.themoviedb.org/3/movie/now_playing?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR";
+const POPULAR_URL =
+  "https://api.themoviedb.org/3/movie/popular?api_key=a51700c7b5c0eac2db0ce7a959dcc750&language=ko-KR";
 
 Vue.use(Vuex);
 
@@ -21,35 +23,35 @@ export default new Vuex.Store({
     popularMovieList: [],
     token: null,
     user_info: [],
-    communitys: []
+    communitys: [],
   },
   getters: {
     isLogin(state) {
-      return state.token ? true : false
-    }
+      return state.token ? true : false;
+    },
   },
   mutations: {
     // SIGN_UP(state, token){
     //   state.token = token
     // },
     SAVE_TOKEN(state, token) {
-      if (router.currentRoute.path !== "/") {
+      if (router.currentRoute.path !== "/movie") {
         state.token = token;
         console.log(state.token);
-        router.push({ name: "home" });
+        router.push({ name: "movie" });
       }
     },
     GET_MOVIES(state, newMovieList) {
-      state.newMovieList = newMovieList
+      state.newMovieList = newMovieList;
     },
     GET_POPULAR_MOVIES(state, popularMovieList) {
-      state.popularMovieList = popularMovieList
+      state.popularMovieList = popularMovieList;
     },
     GET_COMMUNITY(state, communitys) {
-      state.communitys = communitys
+      state.communitys = communitys;
     },
-    GET_USER_INFO(state, user_info){
-      state.user_info = user_info
+    GET_USER_INFO(state, user_info) {
+      state.user_info = user_info;
       // console.log('1')
       // console.log(state.user_info)
     },
@@ -63,7 +65,7 @@ export default new Vuex.Store({
         url: API_URL,
       })
         .then((res) => {
-          context.commit('GET_MOVIES', res.data.results)
+          context.commit("GET_MOVIES", res.data.results);
         })
         .catch((err) => {
           console.log(err);
@@ -77,7 +79,7 @@ export default new Vuex.Store({
       })
         .then((res) => {
           //console.log(res.data.results)
-          context.commit('GET_POPULAR_MOVIES', res.data.results)
+          context.commit("GET_POPULAR_MOVIES", res.data.results);
         })
         .catch((err) => {
           console.log(err);
@@ -129,23 +131,22 @@ export default new Vuex.Store({
         .then((res) => {
           context.commit("SAVE_TOKEN", res.data.access);
           console.log("로그인 성공!");
-          const token = res.data.access
+          const token = res.data.access;
           // console.log('-----')
           // console.log(token)
           axios({
-            method: 'get',
+            method: "get",
             url: `${HOME_URL}/accounts/profile/`,
             headers: {
               Authorization: `Bearer ${token}`,
-            }
-          })
-          .then((response) => {
+            },
+          }).then((response) => {
             // console.log(response.data)
-            context.commit('GET_USER_INFO', response.data)
+            context.commit("GET_USER_INFO", response.data);
             // console.log(response.data)
             // console.log('1')
             // console.log(this.user_info)
-          })
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -154,17 +155,16 @@ export default new Vuex.Store({
     },
     getCommunity(context) {
       axios({
-        method: 'get',
+        method: "get",
         url: `${HOME_URL}/api/v1/community/`,
         // headers: {
         //   Authorization: `Bearer ${token}`,
         // }
-      })
-        .then((response) => {
-          context.commit('GET_COMMUNITY',response.data)
-          // console.log(response)
-        })
-    }
+      }).then((response) => {
+        context.commit("GET_COMMUNITY", response.data);
+        console.log(response)
+      });
+    },
   },
   modules: {},
 });

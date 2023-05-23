@@ -1,22 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import LoginView from '../views/LoginView.vue'
 import MovieView from '../views/MovieView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import CommunityDetailView from '../views/CommunityDetailView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
+import MovieDetailView from '../views/MovieDetailView.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
   {
     path: '/login',
     name: 'login',
@@ -47,7 +42,11 @@ const routes = [
     name: 'CommunityCreateView',
     component: CommunityCreateView
   },
-  
+  {
+    path: '/:id',
+    name: 'MovieDetail',
+    component: MovieDetailView
+  }
 ]
 
 const router = new VueRouter({

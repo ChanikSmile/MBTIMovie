@@ -1,24 +1,17 @@
 <template>
   <div>
-    <h1 style="text-align: left; color: white; margin-left: 30px;">페르소나 최고 인기작</h1>
+    <h1 style="text-align: left; color: white; margin-left: 30px">
+      페르소나 최고 인기작
+    </h1>
     <div
       id="carouselPopularPlaying"
       class="carousel slide"
       data-bs-ride="carousel"
     >
-      <ol class="carousel-indicators">
-        <li
-          data-bs-target="#carouselPopularPlaying"
-          v-for="(group, index) in groupMovies2"
-          :key="index"
-          :data-bs-slide-to="index"
-          :class="{ active: index === 0 }"
-        ></li>
-      </ol>
       <div class="carousel-inner">
         <div
           class="carousel-item"
-          v-for="(group, index) in groupMovies2"
+          v-for="(group, index) in groupMovies"
           :key="index"
           :class="{ active: index === 0 }"
         >
@@ -27,16 +20,20 @@
               class="col-3"
               v-for="movie in group"
               :key="movie.id"
-              @click="updateInfo(movie)"
             >
               <button v-b-modal.modal1-xl class="btn btn-outline-dark">
-                <img
-                  :src="getImageUrl(movie.poster_path)"
-                  class="d-block w-100"
-                  :alt="movie.title"
-                  style="height: 20rem"
-                />
+                <router-link
+                  :to="{ name: 'MovieDetail', params: { id: movie.id } }"
+                >
+                  <img
+                    :src="getImageUrl(movie.poster_path)"
+                    class="d-block w-100"
+                    :alt="movie.title"
+                    style="height: 20rem"
+                  />
+                </router-link>
               </button>
+              <h6>{{ movie.title }}</h6>
             </div>
           </div>
         </div>
@@ -60,28 +57,6 @@
         <span class="visually-hidden">Next</span>
       </a>
     </div>
-    <b-modal
-      id="modal1-xl"
-      size="xl"
-      :title="movieTitle"
-      header-bg-variant="dark"
-      header-text-variant="light"
-      body-bg-variant="dark"
-      body-text-variant="light"
-      footer-bg-variant="dark"
-      footer-text-variant="light"
-    >
-      <iframe
-        width="100%"
-        height="315"
-        :src="movieVideo"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-      <p>{{ movieContent }}</p>
-    </b-modal>
   </div>
 </template>
 
@@ -130,7 +105,7 @@ export default {
     popularMovieList() {
       return this.$store.state.popularMovieList;
     },
-    groupMovies2() {
+    groupMovies() {
       const movieSize = 4;
       const sizes = [];
       for (
