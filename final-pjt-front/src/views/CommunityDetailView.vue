@@ -20,7 +20,10 @@
     <p>내용: {{ community?.content }}</p>
     <p>작성시간: {{ community?.created_at }}</p>
     <p>수정시간: {{ community?.updated_at }}</p>
-
+    <br>
+    <p>좋아요개수: {{ community?.community_user_like.length }}</p>
+    <button @click="likeCommunity(community.id)">Like</button>
+    <br>
     <button @click="editing = true" v-if="isCurrentUser(community?.user)">수정</button>
   </template>
 
@@ -203,7 +206,7 @@ methods: {
         data: {
           content: updatedContent,
           title: updatedTitle,
-          community_user_like: ["1"], // 고쳐야됨
+          community_user_like: [], // 고쳐야됨
           user:user_id
         },
         headers: {
@@ -243,7 +246,49 @@ methods: {
           console.log(err)
         })
   },
-},
+  likeCommunity(communityId) {
+  const token = this.token;
+  const userId = this.user_info[0].user_id;
+  axios({
+    method: 'post',
+    url: `${API_URL}/api/v1/community/${communityId}/likes/`,
+    data: {
+      userId
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then(() => {
+      console.log('커뮤니티 좋아요가 성공적으로 등록되었습니다.');
+      // 로컬에서 community_user_like 리스트 업데이트
+      this.fetchCommunityLikes(communityId)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },
+  fetchCommunityLikes(communityId){
+    const token = this.token
+    axios({
+      method: 'get',
+      url: `${API_URL}/api/v1/community/${communityId}/`,
+      data: {
+        community_pk: communityId
+      },
+      headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    })
+      .then((res) => {
+        //서버에서 받아온 좋아요 개수 업데이트
+        this.community = res.data.community
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+}
 }
 </script>
 

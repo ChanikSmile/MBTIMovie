@@ -125,31 +125,48 @@ def community_detail(request, community_pk):
 
 @api_view(['POST'])
 def likes(request, movie_pk):
-	if request.user.is_authenticated:
-		movie = get_object_or_404(Movie, pk=movie_pk)
-		serializer = MovieSerializer(movie)
-		if serializer.is_valid(raise_exception=True): 
-			if movie.movie_user_like.filter(pk=request.user.pk).exists():
-				movie.movie_user_like.remove(request.user)
-			else:
-				movie.movie_user_like.add(request.user)
-			serializer.save(movie=movie)
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
+	if request.method== "POST":
+		movie = get_object_or_404(Movie, pk=movie_pk)   
+		user = request.data['userId']
+		# serializer = MovieSerializer(movie)
+		# if serializer.is_valid(raise_exception=True): 
+		if movie.movie_user_like.filter(pk=user).exists():
+			movie.movie_user_like.remove(user)
+		else:
+			movie.movie_user_like.add(user)
+		serializer =  MovieSerializer(movie)
+		# serializer.save(movie=movie)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
 	return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
 def community_likes(request, community_pk):
-	if request.user.is_authenticated:
-		community = get_object_or_404(Community, pk=community_pk)
-		serializer = CommunitySerializer(community)
-		if serializer.is_valid(raise_exception=True): 
-			if community.community_user_like.filter(pk=request.user.pk).exists():
-				community.community_user_like.remove(request.user)
-			else:
-				community.community_user_like.add(request.user)
-			serializer.save(community=community)
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-	return Response(status=status.HTTP_401_UNAUTHORIZED)
+    community = get_object_or_404(Community, pk=community_pk)
+    user = request.data['userId']
+    if request.method == "POST":
+        if community.community_user_like.filter(pk=user).exists():
+            community.community_user_like.remove(user)
+        else:
+            community.community_user_like.add(user)
+    serializer = CommunitySerializer(community)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    # elif request.method == "GET":
+    #     serializer = CommunitySerializer(community)
+        # return Response(serializer.data)
+	# if request.user.is_authenticated:
+	# 	community = get_object_or_404(Community, pk=community_pk)
+	# 	serializer = CommunitySerializer(community)
+	# 	print('####################')
+	# 	if serializer.is_valid(raise_exception=True): 
+	# 		print('++++++++++++++++++++')
+			# if community.community_user_like.filter(pk=request.user.pk).exists():
+			# 	community.community_user_like.remove(request.user)
+			# else:
+			# 	community.community_user_like.add(request.user)
+	# 		serializer.save(community=community)
+	# 		return Response(serializer.data, status=status.HTTP_201_CREATED)
+	# return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['GET','DELETE', 'PUT'])
 def community_comment_delete(request, community_pk, comment_pk):
