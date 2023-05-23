@@ -16,9 +16,12 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class CommentListSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Comment
-        fields = ('title', 'content')
+        fields = '__all__'
+        read_only_fields = ('user',)
         
 class CommunityListSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -43,10 +46,12 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     movie = Movie2(read_only=True)
+    user = UserSerializer(read_only=True)
     
     class Meta:
         model = Comment
-        fields = ('id', 'movie', 'title', 'content',)
+        fields = '__all__'
+        read_only_fields = ('user',)
 
 class CommunityCommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -62,5 +67,3 @@ class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
         fields = '__all__'
-    
-    
