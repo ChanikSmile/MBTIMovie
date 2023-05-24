@@ -13,7 +13,7 @@ class MovieListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('title', 'overview', 'genre_ids')
+        fields = ('title', 'overview', 'genre_ids', 'poster_path', 'id')
         read_only_fields = ('overview',)
 
 

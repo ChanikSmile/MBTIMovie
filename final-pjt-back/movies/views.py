@@ -203,7 +203,9 @@ def movie_genre(request):
 def genre_sort(request, sort_num):
     sort_movies = []
     for movie in movies:
-        if sort_num == 12: # 모험
+        if sort_num == 1:    # 전체
+            sort_movies.append(movie)
+        elif sort_num == 12: # 모험
             if str(sort_num) in movie.genre_ids:
                 sort_movies.append(movie)
         elif sort_num == 14: # 판타지
