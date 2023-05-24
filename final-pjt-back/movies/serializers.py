@@ -11,8 +11,8 @@ class Movie2(serializers.ModelSerializer):
 class MovieListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Movie
-		fields = ('title', 'overview')
-		read_only_fields = ('overview',)
+		fields = ('title', 'overview', 'poster_path', 's_user_like', 't_user_like', 'n_user_like', 'f_user_like')
+		read_only_fields = ('overview', 'poster_path', 's_user_like', 't_user_like', 'n_user_like', 'f_user_like', )
 
 
 class CommentListSerializer(serializers.ModelSerializer):
@@ -67,3 +67,5 @@ class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
         fields = '__all__'
+
+

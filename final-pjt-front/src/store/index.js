@@ -27,8 +27,10 @@ export default new Vuex.Store({
     user_info: [],
     communitys: [],
     movieComments: [],
+    like_movies: [],
     user_like_movies: [],
     user_like_recommends: [],
+    user_mbti_recommends: [],
   },
   getters: {
     isLogin(state) {
@@ -68,11 +70,20 @@ export default new Vuex.Store({
       state.user_like_recommends = user_like_recommends
     },
 
+    USER_MBTI_RECOMMENDS(state, user_mbti_recommends) {
+      state.user_mbti_recommends = user_mbti_recommends
+    },
+
     LOGOUT(state) {
       state.token = null;
       state.user_info = [];
       router.push({ name: "login" });
     },
+    LIKE_MOVIES(state, like_movies) {
+      console.log('개수확인', like_movies)
+      state.like_movies = like_movies
+      console.log('1', like_movies)
+    }
   },
   actions: {
     // 최신영화 가져오기!
@@ -231,31 +242,98 @@ export default new Vuex.Store({
         })
     },
 
-    // getUserProfile(context) {
-    //   const token = context.state.token;
-    //   const user_pk = context.state.user_info[0].user_id
-    //   // console.log('-----')
-    //   // console.log(token)
-    //   axios({
-    //     method: "get",
-    //     url: `${HOME_URL}/accounts/profile/`,
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     params: {
-    //       user_pk: user_pk
-    //     }
-    //   })
-    //     .then((response) => {
-    //       context.commit('GET_USER_INFO', response.data)
-    //       console.log('사용자 정보:', response.data);
+    userMbtiRecommends(context) {
+      const userId = context.state.user_info[0].user_id
+      const token = context.state.token
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/accounts/${userId}/user_mbti_reco/`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }, 
+      })
+        .then((res) => {
+          context.commit("USER_MBTI_RECOMMENDS", res.data)
+        }) 
+        .catch(err => {
+          console.log(err)
+        })
+    },
 
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       console.log("사용자 정보 가져오기 실패...");
-    //     });
-    // },
+    likeMovies(context, payload) {
+    const token = payload.token;
+    const userId = payload.userId;
+    const mbtis = payload.mbtis
+    const movieId = payload.movieId
+    axios({
+      method: 'post',
+      url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
+      data: {
+        userId, mbtis
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => {
+        console.log('커뮤니티 좋아요가 성공적으로 등록되었습니다.');
+        // 로컬에서 community_user_like 리스트 업데이트
+        context.dispatch('fetchMovieLikes', movieId)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+
+    fetchMovieLikes(context, movieId){
+      const token = context.state.token
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/api/v1/movies/${movieId}/`,
+        data: {
+          movie_pk: movieId
+        },
+        headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      })
+        .then((res) => {
+          //서버에서 받아온 좋아요 개수 업데이트
+          console.log('여기까지?')
+          // console.log(res.data)
+          context.commit('LIKE_MOVIES', res.data.movie_user_like)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+    getLikeMovie(context, payload) {
+      const token = payload.token;
+      const userId = payload.userId;
+      const mbtis = payload.mbtis
+      const movieId = payload.movieId
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
+        data: {
+          userId, mbtis
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          console.log('커뮤니티 좋아요가 성공적으로 등록되었습니다.');
+          // 로컬에서 community_user_like 리스트 업데이트
+          context.commit('LIKE_MOVIES', res.data.movie_user_like)
+          console.log('개수확인', res.data.movie_user_like)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
   },
   modules: {},
 });

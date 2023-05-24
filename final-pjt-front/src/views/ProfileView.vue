@@ -34,10 +34,13 @@
           </div>
           <div class="p-4 rounded shadow-sm bg-light">
             <div class="row">
-              <div v-if="user_like_movies" class="container-fluid">
+              <div v-if="user_like_movies.length > 0" class="container-fluid">
                   <ProfileMovie v-for="movie in user_like_movies"
                   :key="movie.id"
                   :movie="movie"></ProfileMovie>
+              </div>
+              <div v-else class="container-fluid">
+                <h6>좋아요를 한 영화가 없습니다.</h6>
               </div>
             </div>
           </div>
@@ -46,10 +49,22 @@
           </div>
           <div class="p-4 rounded shadow-sm bg-light">
             <div class="row">
-              <div v-if="user_like_recommends" class="container-fluid">
+              <div v-if="user_like_recommends[0]" class="container-fluid">
                   <ProfileRecommendMovie v-for="movie in user_like_recommends[0]"
                   :key="movie.id"
                   :movie="movie['fields']"></ProfileRecommendMovie>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 style="font-weight:bold; margin-left:10px">❤️MBTI 영화로 추천</h5>         
+          </div>
+          <div class="p-4 rounded shadow-sm bg-light">
+            <div class="row">
+              <div v-if="user_mbti_recommends" class="container-fluid">
+                  <ProfileRecommendMbti v-for="(movie, idx) in user_mbti_recommends"
+                  :key="idx"
+                  :movie="movie"></ProfileRecommendMbti>
               </div>
             </div>
           </div>
@@ -57,7 +72,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
 </template>
@@ -67,13 +81,15 @@
 import { mapState } from 'vuex'
 import ProfileMovie from './ProfileMovie.vue'
 import ProfileRecommendMovie from './ProfileRecommendMovie.vue'
+import ProfileRecommendMbti from './ProfileRecommendMbti.vue'
 
   
   export default {
     name: "ProfileView",
     components: {
       ProfileMovie,
-      ProfileRecommendMovie
+      ProfileRecommendMovie,
+      ProfileRecommendMbti,
     },
     data() {
       return {
@@ -85,7 +101,7 @@ import ProfileRecommendMovie from './ProfileRecommendMovie.vue'
     },
   
     computed: {
-      ...mapState(['user_info', 'user_like_movies', 'user_like_recommends']),
+      ...mapState(['user_info', 'user_like_movies', 'user_like_recommends', 'user_mbti_recommends']),
       isLogin() {
       return this.$store.getters.isLogin;
       },
@@ -98,6 +114,7 @@ import ProfileRecommendMovie from './ProfileRecommendMovie.vue'
     created() {
       this.$store.dispatch('userLikeMovies')
       this.$store.dispatch('userLikeRecommends')
+      this.$store.dispatch('userMbtiRecommends')
     },
   }
 </script>

@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 
-# 사용자가 좋아요/위시리스트/평점을 준 영화 목록 조회
+# 사용자가 '좋아요'한 영화 목록 조회
 class UserMovieListSerializer(serializers.ModelSerializer):
 
     class MovieSerializer(serializers.ModelSerializer):
@@ -30,8 +30,14 @@ class UserMovieListSerializer(serializers.ModelSerializer):
 
     # 좋아요 한 영화 목록
     like_movies = MovieSerializer(many=True)
+    s_like_movies = MovieSerializer(many=True)
+    n_like_movies = MovieSerializer(many=True)
+    t_like_movies = MovieSerializer(many=True)
+    f_like_movies = MovieSerializer(many=True)
 
     class Meta:
         model = get_user_model()
-        # 사용자 id, 평가한 영화 목록, 좋아요한 영화 목록, 위시리스트에 담은 영화 목록
-        fields = ('id', 'like_movies',)
+        # 사용자 id, 좋아요한 영화 목록
+        fields = ('id', 'poster_path', 'like_movies', 's_like_movies', 'n_like_movies', 't_like_movies', 'f_like_movies')
+        
+        
