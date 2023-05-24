@@ -27,6 +27,8 @@ export default new Vuex.Store({
     user_info: [],
     communitys: [],
     movieComments: [],
+    user_like_movies: [],
+    user_like_recommends: [],
   },
   getters: {
     isLogin(state) {
@@ -58,6 +60,14 @@ export default new Vuex.Store({
       // console.log('1')
       // console.log(state.user_info)
     },
+    USER_LIKE_MOVIES(state, user_like_movies) {
+      state.user_like_movies = user_like_movies
+    },
+
+    USER_LIKE_RECOMMENDS(state, user_like_recommends) {
+      state.user_like_recommends = user_like_recommends
+    },
+
     LOGOUT(state) {
       state.token = null;
       state.user_info = [];
@@ -185,6 +195,67 @@ export default new Vuex.Store({
         console.log(response)
       });
     },
+
+    userLikeMovies(context) {
+      const userId = context.state.user_info[0].user_id
+      const token = context.state.token
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/accounts/${userId}/user_like_movie/`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }, 
+      })
+        .then((res) => {
+          context.commit("USER_LIKE_MOVIES", res.data)
+        }) 
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    userLikeRecommends(context) {
+      const userId = context.state.user_info[0].user_id
+      const token = context.state.token
+      axios({
+        method: 'get',
+        url: `${HOME_URL}/accounts/${userId}/user_like_reco/`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }, 
+      })
+        .then((res) => {
+          context.commit("USER_LIKE_RECOMMENDS", res.data)
+        }) 
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+    // getUserProfile(context) {
+    //   const token = context.state.token;
+    //   const user_pk = context.state.user_info[0].user_id
+    //   // console.log('-----')
+    //   // console.log(token)
+    //   axios({
+    //     method: "get",
+    //     url: `${HOME_URL}/accounts/profile/`,
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     params: {
+    //       user_pk: user_pk
+    //     }
+    //   })
+    //     .then((response) => {
+    //       context.commit('GET_USER_INFO', response.data)
+    //       console.log('사용자 정보:', response.data);
+
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       console.log("사용자 정보 가져오기 실패...");
+    //     });
+    // },
   },
   modules: {},
 });

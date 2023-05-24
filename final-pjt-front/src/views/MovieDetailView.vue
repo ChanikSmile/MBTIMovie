@@ -252,7 +252,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .movie-detail-card {
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
