@@ -66,7 +66,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .loginbox {
   margin: 0;
   box-sizing: border-box;

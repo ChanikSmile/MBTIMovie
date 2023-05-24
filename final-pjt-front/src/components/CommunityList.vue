@@ -50,7 +50,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .table {
   margin-top: 3rem;
 }
