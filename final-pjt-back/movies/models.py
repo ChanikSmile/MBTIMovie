@@ -4,7 +4,7 @@ from django.conf import settings
 # Create your models here.
 class Movie(models.Model):
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    movie_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
+    movie_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies', blank=True)
     title = models.CharField(max_length=100)
     overview = models.TextField()
     release_date = models.DateTimeField()
@@ -32,7 +32,7 @@ class Community(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    community_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community')
+    community_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_community', blank=True)
 
 class Community_comment(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE, related_name="comments")

@@ -16,6 +16,9 @@
     <router-link v-if="!isLogin" style="text-decoration: none; color: inherit" to="/login"
       >로그인 | </router-link
     >
+    <router-link v-if="isLogin" style="text-decoration: none; color: inherit" to="/profile"
+      >프로필 | </router-link
+    >
     
     <a href="#" v-if="isLogin" @click="logout">로그아웃 | </a> 
 
