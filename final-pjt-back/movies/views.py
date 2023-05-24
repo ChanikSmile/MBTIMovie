@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Movie, Comment, Community, Community_comment
+from .models import Movie, Genre, Comment, Community, Community_comment
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,8 +12,10 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import MovieListSerializer, MovieSerializer, CommentSerializer, CommentListSerializer
+from .serializers import MovieListSerializer, MovieSerializer, CommentSerializer, CommentListSerializer, GenreListSerializer
 from .serializers import CommunityListSerializer, CommunitySerializer, CommunityCommentSerializer, CommunityCommentListSerializer
+
+movies = Movie.objects.all()
 
 # Create your views here.
 @api_view(['GET'])
@@ -189,3 +191,74 @@ def community_comment_delete(request, community_pk, comment_pk):
         return Response(status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def movie_genre(request):
+    if request.method == 'GET':
+        movies = Movie.objects.all()
+        serializer = MovieListSerializer(movies, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def genre_sort(request, sort_num):
+    sort_movies = []
+    for movie in movies:
+        if sort_num == 12: # 모험
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 14: # 판타지
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 16: # 애니메이션
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 18: # 드라마
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 27: # 공포
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 28: # 액션
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 35: # 코미디
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 36: # 역사
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 37: # 서부
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 53: # 스릴러
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 80: # 범죄
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 99: # 다큐멘터리
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 878: # SF
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 9648: # 미스터리
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 10402: # 음악
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 10749: # 로맨스
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 10751: # 가족
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 10752: # 전쟁
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+        elif sort_num == 10770: # TV 영화
+            if str(sort_num) in movie.genre_ids:
+                sort_movies.append(movie)
+    serializer = MovieListSerializer(sort_movies, many=True)
+    return Response(serializer.data)
