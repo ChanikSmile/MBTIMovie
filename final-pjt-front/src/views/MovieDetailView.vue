@@ -25,7 +25,7 @@
             </div>
             <p>좋아요개수: {{ movie_user_like?.length }}</p>
             <button @click="likeMovie(movie.id)">좋아욥</button>
-    <br>
+            <br />
             <div class="movie-detail-overview-header">줄거리</div>
             <hr />
             <div v-if="movie.overview" class="movie-detail-overview-body">
@@ -50,15 +50,16 @@
           </div>
           <div class="movie-detail-lower">
             <div class="movie-youtube-area">
-              이 영화를 한 문장으로 표현한다면?
+
               <hr />
-              <form @submit.prevent="createComment" @keyup.enter="createComment">
-                <textarea
+              <form
+                @submit.prevent="createComment"
+                @keyup.enter="createComment"
+              >
+                <b-form-input
                   v-model="comment"
-                  id="content"
-                  cols="80"
-                  rows="1"
-                ></textarea>
+                  placeholder="이 영화를 한 줄로 표현한다면?"
+                ></b-form-input>
                 <input type="submit" id="submit" />
               </form>
             </div>
@@ -100,7 +101,7 @@ import { mapState } from "vuex";
 
 const API_URL = "https://api.themoviedb.org/3/movie";
 const COMMENT_URL = "http://127.0.0.1:8000/api/v1";
-const HOME_URL = 'http://127.0.0.1:8000'
+const HOME_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "MovieDetail",
@@ -121,7 +122,7 @@ export default {
     ...mapState(["token"]),
     ...mapState(["user_info"]),
     isLogin() {
-      return this.$store.getters.isLogin // 로그인 여부
+      return this.$store.getters.isLogin; // 로그인 여부
     },
   },
   methods: {
@@ -132,7 +133,7 @@ export default {
       })
         .then((res) => {
           console.log(res);
-          console.log('처음', res.data)
+          console.log("처음", res.data);
           this.movie = res.data;
         })
         .catch((err) => {
@@ -181,8 +182,8 @@ export default {
           if (this.$route.name !== "MovieDetail") {
             this.$router.push({ name: "MovieDetail" });
           }
-          this.getComment()
-          this.comment = ""
+          this.getComment();
+          this.comment = "";
         })
         .catch((err) => {
           console.log(err);
@@ -196,58 +197,59 @@ export default {
       })
         .then((res) => {
           console.log("조찬익", res);
-          this.movieComment = res.data.filter((comment) => comment.movie === this.movie.id);
-            
+          this.movieComment = res.data.filter(
+            (comment) => comment.movie === this.movie.id
+          );
         })
         .catch((err) => {
           console.log(err);
         });
     },
     likeMovie(movieId) {
-    const token = this.token;
-    const userId = this.user_info[0].user_id;
-    console.log(movieId)
-    axios({
-      method: 'post',
-      url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
-      data: {
-        userId
-      },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(() => {
-        console.log('커뮤니티 좋아요가 성공적으로 등록되었습니다.');
-        // 로컬에서 community_user_like 리스트 업데이트
-        this.fetchMovieLikes(movieId)
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    },
-    fetchMovieLikes(movieId){
-      const token = this.token
+      const token = this.token;
+      const userId = this.user_info[0].user_id;
+      console.log(movieId);
       axios({
-        method: 'get',
-        url: `${HOME_URL}/api/v1/movies/${movieId}/`,
+        method: "post",
+        url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
         data: {
-          movie_pk: movieId
+          userId,
         },
         headers: {
-        Authorization: `Bearer ${token}`,
-      },
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(() => {
+          console.log("커뮤니티 좋아요가 성공적으로 등록되었습니다.");
+          // 로컬에서 community_user_like 리스트 업데이트
+          this.fetchMovieLikes(movieId);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    fetchMovieLikes(movieId) {
+      const token = this.token;
+      axios({
+        method: "get",
+        url: `${HOME_URL}/api/v1/movies/${movieId}/`,
+        data: {
+          movie_pk: movieId,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then((res) => {
           //서버에서 받아온 좋아요 개수 업데이트
-          console.log('여기까지?')
+          console.log("여기까지?");
           // console.log(res.data)
-          this.movie_user_like = res.data.movie_user_like
+          this.movie_user_like = res.data.movie_user_like;
         })
-        .catch(err => {
-          console.log(err)
-        })
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

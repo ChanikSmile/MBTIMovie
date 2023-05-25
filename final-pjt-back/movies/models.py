@@ -2,6 +2,11 @@ from django.db import models
 from django.conf import settings
 
 # Create your models here.
+class Genre(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=50)
+
+
 class Movie(models.Model):
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     movie_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies', blank=True)
@@ -18,6 +23,7 @@ class Movie(models.Model):
     genre_ids = models.TextField()
     backdrop_path = models.TextField()
     adult = models.TextField()
+    genre_check = models.ManyToManyField(Genre, related_name='genre_movies')
     # movie_id = models.IntegerField()
     
 class Comment(models.Model):

@@ -18,4 +18,8 @@ urlpatterns = [
 	path('community/<int:community_pk>/', views.community_detail),
 	# path('community/create/', views.create_community),
 	path('community/<int:community_pk>/comments/<int:comment_pk>/', views.community_comment_delete),
+
+	# genre
+	path('moviegenre/', views.movie_genre),
+	path('<int:sort_num>/sort/', views.genre_sort),
 ]

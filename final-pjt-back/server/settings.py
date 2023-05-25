@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definitio'
 
 INSTALLED_APPS = [
+    'rest_framework',
     'movies',
     'accounts',
-    'rest_framework',
     
     #CORS policy
     'corsheaders',

@@ -1,18 +1,27 @@
 from rest_framework import serializers
-from .models import Movie, Comment, Community, Community_comment
+from .models import Movie, Genre, Comment, Community, Community_comment
 from accounts.serializers import UserSerializer
 
 class Movie2(serializers.ModelSerializer):
+    
     class Meta:
         model = Movie
         fields = ('title',)
 
 
 class MovieListSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Movie
-		fields = ('title', 'overview')
-		read_only_fields = ('overview',)
+
+    class Meta:
+        model = Movie
+        fields = ('title', 'overview', 'genre_ids', 'poster_path', 'id')
+        read_only_fields = ('overview',)
+
+
+class GenreListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Genre
+        fields = "__all__"
 
 
 class CommentListSerializer(serializers.ModelSerializer):

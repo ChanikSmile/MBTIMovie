@@ -29,6 +29,7 @@ export default new Vuex.Store({
     movieComments: [],
     user_like_movies: [],
     user_like_recommends: [],
+    genreMovieList: [],
   },
   getters: {
     isLogin(state) {

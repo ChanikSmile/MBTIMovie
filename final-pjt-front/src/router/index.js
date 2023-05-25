@@ -8,6 +8,7 @@ import CommunityView from '../views/CommunityView.vue'
 import CommunityDetailView from '../views/CommunityDetailView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
 import MovieDetailView from '../views/MovieDetailView.vue'
+import GenreListView from '../views/GenreListView.vue'
 
 
 Vue.use(VueRouter)
@@ -34,6 +35,11 @@ const routes = [
     component: MovieView
   },
   {
+    path: '/genre',
+    name: 'Genre',
+    component: GenreListView
+  },
+  {
     path: '/community',
     name: 'community',
     component: CommunityView
@@ -52,7 +58,7 @@ const routes = [
     path: '/:id',
     name: 'MovieDetail',
     component: MovieDetailView
-  }
+  },
 ]
 
 const router = new VueRouter({
