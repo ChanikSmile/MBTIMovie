@@ -2,6 +2,7 @@
   <div class="justify-content-center">
     <div class="jb-box">
       <iframe
+        class="mainVideo"
         width="100%"
         height="500"
         src="https://www.youtube.com/embed/oSqK_v6zPoM?mute=1&autoplay=1&rel=0&controls=0&showinfo=0"
@@ -70,23 +71,34 @@ export default {
 
 .jb-box {
   width: 100%;
-  height: 500px;
+  height: 0;
   overflow: hidden;
   margin: 0px auto;
   position: relative;
+  padding-bottom: 56.25%;
 }
 
 .jb-text {
   position: absolute;
   top: 50%;
   width: 100%;
+  background-color: transparent;
 }
 
 .jb-text p {
   margin-top: -24px;
   margin-left: 30px;
   text-align: left;
-  font-size: 48px;
+  font-size: 40px;
   color: #ffffff;
+  background-color: transparent;
+}
+
+.mainVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
