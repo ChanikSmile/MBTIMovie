@@ -125,21 +125,52 @@ def community_detail(request, community_pk):
 #         serializer.save()
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def likes(request, movie_pk):
 	if request.method== "POST":
-		movie = get_object_or_404(Movie, pk=movie_pk)   
+		movie = get_object_or_404(Movie, pk=movie_pk)
 		user = request.data['userId']
-		# serializer = MovieSerializer(movie)
-		# if serializer.is_valid(raise_exception=True): 
+		user_mbtis = request.data['mbtis']
+
 		if movie.movie_user_like.filter(pk=user).exists():
 			movie.movie_user_like.remove(user)
+
 		else:
 			movie.movie_user_like.add(user)
+
+		for i in range(2):
+			if user_mbtis[i] == 'S':
+				if movie.s_user_like.filter(pk=user).exists():
+					movie.s_user_like.remove(user)
+				else:
+					movie.s_user_like.add(user)
+			if user_mbtis[i] == 'N':
+				if movie.n_user_like.filter(pk=user).exists():
+					movie.n_user_like.remove(user)
+					print(1)
+				else:
+					movie.n_user_like.add(user)
+			if user_mbtis[i] == 'T':
+				if movie.t_user_like.filter(pk=user).exists():
+					movie.t_user_like.remove(user)
+				else:
+					movie.t_user_like.add(user)
+			if user_mbtis[i] == 'F':
+				if movie.f_user_like.filter(pk=user).exists():
+					movie.f_user_like.remove(user)
+				else:
+					movie.f_user_like.add(user)
+
 		serializer =  MovieSerializer(movie)
-		# serializer.save(movie=movie)
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+	elif request.method== "GET":
+		movie = get_object_or_404(Movie, pk=movie_pk)																																																																
+		serializer =  MovieSerializer(movie)
+		return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 	return Response(status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['POST'])
 def community_likes(request, community_pk):
