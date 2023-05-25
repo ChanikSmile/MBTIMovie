@@ -34,10 +34,12 @@ export default {
     createCommunity() {
       const title = this.title
       const content = this.content
-      const storedData = localStorage.getItem("vuex");
+      const storedData = sessionStorage.getItem("vuex");
       const token = JSON.parse(storedData).token;
       const user = this.user_info[0].user_id
-      const community_user_like = ["1"]
+      // const username = this.user_info[0].username
+      console.log(this.user_info[0])
+      const community_user_like = []
       if (!title) {
         alert('제목 입력해주세요')
         return

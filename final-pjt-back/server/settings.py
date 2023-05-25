@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definitio'
 
 INSTALLED_APPS = [
+    'rest_framework',
     'movies',
     'accounts',
-    'rest_framework',
     
     #CORS policy
     'corsheaders',
@@ -145,9 +145,11 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CORS_ALLOWED_ORIGINS =[
-    'http://localhost:8080',
-]
+# CORS_ALLOWED_ORIGINS =[
+#     'http://localhost:8081',
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'accounts.User'
 

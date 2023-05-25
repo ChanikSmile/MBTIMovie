@@ -1,16 +1,9 @@
 <template>
   <div>
-    <h1 style="text-align: left; color: white; margin-left: 30px;">페르소나 최신 작품을 만나보세요!</h1>
+    <h1 style="text-align: left; font-weight:bold; color: #00788D; margin-left: 30px">
+      페르소나 최신 작품을 만나보세요!
+    </h1>
     <div id="carouselNowPlaying" class="carousel slide" data-bs-ride="carousel">
-      <ol class="carousel-indicators">
-        <li
-          data-bs-target="#carouselNowPlaying"
-          v-for="(group, index) in groupMovies"
-          :key="index"
-          :data-bs-slide-to="index"
-          :class="{ active: index === 0 }"
-        ></li>
-      </ol>
       <div class="carousel-inner">
         <div
           class="carousel-item"
@@ -19,20 +12,20 @@
           :class="{ active: index === 0 }"
         >
           <div class="row">
-            <div
-              class="col-3"
-              v-for="movie in group"
-              :key="movie.id"
-              @click="updateInfo(movie)"
-            >
-              <button v-b-modal.modal-xl class="btn btn-outline-dark">
-                <img
-                  :src="getImageUrl(movie.poster_path)"
-                  class="d-block w-100"
-                  :alt="movie.title"
-                  style="height: 20rem"
-                />
+            <div class="col-3" v-for="movie in group" :key="movie.id">
+              <button class="btn btn-outline-dark">
+                <router-link
+                  :to="{ name: 'MovieDetail', params: {'id': movie.id } }"
+                >
+                  <img
+                    :src="getImageUrl(movie.poster_path)"
+                    class="d-block w-100"
+                    :alt="movie.title"
+                    style="height: 20rem"
+                  />
+                </router-link>
               </button>
+              <h6>{{ movie.title }}</h6>
             </div>
           </div>
         </div>
@@ -56,28 +49,6 @@
         <span class="visually-hidden">Next</span>
       </a>
     </div>
-    <b-modal
-      id="modal-xl"
-      size="xl"
-      :title="movieTitle"
-      header-bg-variant="dark"
-      header-text-variant="light"
-      body-bg-variant="dark"
-      body-text-variant="light"
-      footer-bg-variant="dark"
-      footer-text-variant="light"
-    >
-      <iframe
-        width="100%"
-        height="315"
-        :src="movieVideo"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-      <p>{{ movieContent }}</p>
-    </b-modal>
   </div>
 </template>
 
@@ -143,4 +114,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style >
+h6 {
+  color: white;
+}
+</style>
