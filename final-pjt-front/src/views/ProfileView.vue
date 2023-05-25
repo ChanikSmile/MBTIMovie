@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 style="font-weight:bold; margin-left:10px">❤️좋아요를 누른 영화로 추천</h5>           
+            <h5 style="font-weight:bold; margin-left:10px">❤️좋아요를 누른 영화로 추천 (없으면 자동추천)</h5>           
           </div>
           <div class="p-4 rounded shadow-sm bg-light">
             <div class="row">

@@ -158,7 +158,7 @@ def likes(request, movie_pk):
 					movie.f_user_like.remove(user)
 				else:
 					movie.f_user_like.add(user)
-   
+
 		serializer =  MovieSerializer(movie)
 		return Response(serializer.data, status=status.HTTP_201_CREATED)
 

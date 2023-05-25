@@ -38,6 +38,6 @@ class UserMovieListSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         # 사용자 id, 좋아요한 영화 목록
-        fields = ('id', 'poster_path', 'like_movies', 's_like_movies', 'n_like_movies', 't_like_movies', 'f_like_movies')
+        fields = ('id', 'like_movies', 's_like_movies', 'n_like_movies', 't_like_movies', 'f_like_movies')
         
         

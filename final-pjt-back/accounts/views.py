@@ -71,6 +71,7 @@ def user_like_reco(request, user_pk):
     if like_lst:
         random_list = []
         for i in range(len(like_lst)):
+            
             random_list.append(like_lst[i])
             # print(like_lst[i])
         random_movie = random.choice(random_list)
@@ -90,8 +91,9 @@ def user_like_reco(request, user_pk):
         for random_genre in random_movie:
             if int(random_genre) in movie['fields']['genre_ids']:
                 # print(1)
-                recommend_movies.append(movie)
-                continue
+                if movie not in recommend_movies:
+                    recommend_movies.append(movie)
+                    continue
     
     # print(recommend_movies)
     final_reco = []
@@ -123,19 +125,19 @@ def user_mbti_reco(request, user_pk):
     like_lst = []
     if user_mbtis[0] == 'N':
         for i in range(len(serializer.data)):
-            if serializer.data[i].get('n_user_like') and serializer.data[i].get('n_user_like') not in like_lst:
+            if serializer.data[i].get('n_user_like') and serializer.data[i] not in like_lst:
                 like_lst.append(serializer.data[i])
     elif user_mbtis[0] == 'S':
         for i in range(len(serializer.data)):
-            if serializer.data[i].get('s_user_like') and serializer.data[i].get('s_user_like') not in like_lst:
+            if serializer.data[i].get('s_user_like') and serializer.data[i] not in like_lst:
                 like_lst.append(serializer.data[i])
     if user_mbtis[1] == 'T':
         for i in range(len(serializer.data)):
-            if serializer.data[i].get('t_user_like') and serializer.data[i].get('t_user_like') not in like_lst:
+            if serializer.data[i].get('t_user_like') and serializer.data[i] not in like_lst:
                 like_lst.append(serializer.data[i])
     elif user_mbtis[0] == 'F':
         for i in range(len(serializer.data)):
-            if serializer.data[i].get('f_user_like') and serializer.data[i].get('f_user_like') not in like_lst:
+            if serializer.data[i].get('f_user_like') and serializer.data[i] not in like_lst:
                 like_lst.append(serializer.data[i])
                 
     print(len(like_lst))
