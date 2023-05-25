@@ -54,7 +54,7 @@ def user_like_movie(request, user_pk):
 def user_like_reco(request, user_pk):
     User = get_user_model()
 
-    movies_json = open('./movies/fixtures/movies.json', encoding='UTF8')
+    movies_json = open('./movies/fixtures/movie_data.json', encoding='UTF8')
     movies_list = json.load(movies_json)
     
     genre_json = open('./movies/fixtures/genres.json', encoding='UTF8')
@@ -99,7 +99,7 @@ def user_like_reco(request, user_pk):
 
 def user_mbti_reco(request, user_pk):
     User = get_user_model()
-    movies_json = open('./movies/fixtures/movies.json', encoding='UTF8')
+    movies_json = open('./movies/fixtures/movie_data.json', encoding='UTF8')
     movies_list = json.load(movies_json)
     
     genre_json = open('./movies/fixtures/genres.json', encoding='UTF8')

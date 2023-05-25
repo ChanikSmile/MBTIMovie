@@ -50,13 +50,16 @@
                 >로그인 |
               </router-link></b-dropdown-item
             >
+            <b-dropdown-item variant="light"
+              >
             <router-link
               v-if="isLogin"
               style="text-decoration: none; color: inherit"
               to="/profile"
               >프로필 |
             </router-link>
-            |
+            </b-dropdown-item
+            >
             <b-dropdown-item variant="light">
               <router-link
                 v-if="!isLogin"

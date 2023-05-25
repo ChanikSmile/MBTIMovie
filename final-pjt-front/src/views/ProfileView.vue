@@ -43,7 +43,7 @@
                       <template v-if="user_like_movies.length <= 4">
                         <div class="carousel-item active">
                           <div class="row justify-content-center">
-                            <div v-for="(movie, movieIndex) in user_like_movies" :key="movieIndex" class="col-md-3">
+                            <div v-for="movie in user_like_movies" :key="movie.id" class="col-md-3">
                               <div class="d-flex justify-content-center">
                                 <ProfileMovie :movie="movie"></ProfileMovie>
                               </div>
@@ -63,7 +63,7 @@
                           :class="{ active: index === 0 }"
                         >
                           <div class="row justify-content-center">
-                            <div v-for="(movie, movieIndex) in movieGroup" :key="movieIndex" class="col-md-3">
+                            <div v-for="movie in movieGroup" :key="movie.id" class="col-md-3">
                               <div class="d-flex justify-content-center">
                                 <ProfileMovie :movie="movie"></ProfileMovie>
                               </div>http://localhost:8080/profile#movieCarousel
@@ -97,9 +97,9 @@
                     <div class="carousel-inner">
                       <div v-for="(movieGroup, index) in Math.ceil(user_like_recommends[0].length / 4)" :key="index" :class="['carousel-item', { active: index === 0 }]">
                         <div class="row justify-content-center">
-                          <div v-for="(movie, movieIndex) in user_like_recommends[0].slice(index * 4, (index * 4) + 4)" :key="movieIndex" class="col-md-3">
+                          <div v-for="movie in user_like_recommends[0].slice(index * 4, (index * 4) + 4)" :key="movie.pk" class="col-md-3">
                             <div class="d-flex justify-content-center">
-                              <ProfileRecommendMovie :movie="movie['fields']"></ProfileRecommendMovie>
+                              <ProfileRecommendMovie :movie="movie"></ProfileRecommendMovie>
                             </div>
                           </div>
                         </div>
@@ -118,7 +118,7 @@
               </div>
             </div>
             <div class="d-flex align-items-center justify-content-between mb-3">
-              <h5 style="font-weight:bold; margin-left:10px; color: pink;">❤️MBTI 영화로 추천</h5>
+              <h5 style="font-weight:bold; margin-left:10px; color: pink;">❤️MBTI로 영화 추천</h5>
             </div>
             <div class="p-4">
               <div class="row">
@@ -127,7 +127,7 @@
                     <div class="carousel-inner">
                       <div v-for="(movieGroup, index) in Math.ceil(user_mbti_recommends.length / 4)" :key="index" :class="['carousel-item', { active: index === 0 }]">
                         <div class="row justify-content-center">
-                          <div v-for="(movie, movieIndex) in user_mbti_recommends.slice(index * 4, (index * 4) + 4)" :key="movieIndex" class="col-md-3">
+                          <div v-for="movie in user_mbti_recommends.slice(index * 4, (index * 4) + 4)" :key="movie.id" class="col-md-3">
                             <div class="d-flex justify-content-center">
                               <ProfileRecommendMbti :movie="movie"></ProfileRecommendMbti>
                             </div>
@@ -172,10 +172,6 @@ import ProfileRecommendMbti from './ProfileRecommendMbti.vue'
     },
     data() {
       return {
-        // userId: this.$route.params.userId,
-        // keyvalue: 'like_movies',
-        // slide: 0,
-        // sliding: null,
       }
     },
   

@@ -129,6 +129,7 @@ def community_detail(request, community_pk):
 def likes(request, movie_pk):
 	if request.method== "POST":
 		movie = get_object_or_404(Movie, pk=movie_pk)
+		print(movie)
 		user = request.data['userId']
 		user_mbtis = request.data['mbtis']
 

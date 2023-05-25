@@ -41,6 +41,11 @@ const routes = [
     component: MovieView
   },
   {
+    path: '/',
+    name: 'movie',
+    component: MovieView
+  },
+  {
     path: '/genre',
     name: 'Genre',
     component: GenreListView

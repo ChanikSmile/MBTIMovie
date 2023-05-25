@@ -205,6 +205,7 @@ export default {
     },
 
     likeMovie(movieId) {
+    console.log(movieId)
     const token = this.token;
     const userId = this.user_info[0].user_id;
     const mbtis = this.user_info[0].mbtis

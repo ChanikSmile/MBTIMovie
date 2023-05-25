@@ -266,6 +266,7 @@ export default new Vuex.Store({
     const userId = payload.userId;
     const mbtis = payload.mbtis
     const movieId = payload.movieId
+
     axios({
       method: 'post',
       url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
