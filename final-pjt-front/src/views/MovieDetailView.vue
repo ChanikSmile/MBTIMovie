@@ -50,7 +50,6 @@
           </div>
           <div class="movie-detail-lower">
             <div class="movie-youtube-area">
-
               <hr />
               <form
                 @submit.prevent="createComment"
@@ -65,6 +64,7 @@
             </div>
             <div v-for="comment in movieComment" :key="comment.id">
               <p v-if="comment.movie === movie.id">{{ comment.content }}</p>
+              <button @click="commentDelete(comment.id)">삭제</button>
             </div>
           </div>
         </div>
@@ -110,12 +110,12 @@ export default {
     // this.$store.dispatch('fetchMovieLikes');
     const token = this.token;
     const userId = this.user_info[0].user_id;
-    const movieId = this.id
-    const payload = { token, userId, movieId}
-    this.$store.dispatch('getLikeMovie', payload)
+    const movieId = this.id;
+    const payload = { token, userId, movieId };
+    this.$store.dispatch("getLikeMovie", payload);
   },
   props: {
-    id: Number
+    id: Number,
   },
   data() {
     return {
@@ -150,7 +150,27 @@ export default {
           console.log(err);
         });
     },
-
+    commentDelete(commentId) {
+      //console.log(commentId);
+      const token = this.token;
+      axios({
+        method: "delete",
+        url: `${COMMENT_URL}/movies/comments/${commentId}`,
+        data: { comment_pk: commentId, movie_pk: this.$route.params.id },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(() => {
+          console.log("삭제완료!");
+          this.movieComment = this.movieComment.filter(
+            (comment) => comment.id !== commentId
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     getImageUrl(posterPath) {
       if (posterPath) {
         return "https://image.tmdb.org/t/p/w220_and_h330_face/" + posterPath;
@@ -205,15 +225,18 @@ export default {
     },
 
     likeMovie(movieId) {
-    console.log(movieId)
-    const token = this.token;
-    const userId = this.user_info[0].user_id;
-    const mbtis = this.user_info[0].mbtis
-    const payload = {
-      token, userId, mbtis, movieId
-    }
-    console.log(payload)
-    this.$store.dispatch("likeMovies", payload)
+      console.log(movieId);
+      const token = this.token;
+      const userId = this.user_info[0].user_id;
+      const mbtis = this.user_info[0].mbtis;
+      const payload = {
+        token,
+        userId,
+        mbtis,
+        movieId,
+      };
+      console.log(payload);
+      this.$store.dispatch("likeMovies", payload);
     },
 
     getComment() {
@@ -235,7 +258,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .movie-detail-card {
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
