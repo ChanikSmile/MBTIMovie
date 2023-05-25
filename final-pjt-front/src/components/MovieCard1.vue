@@ -15,7 +15,7 @@
             <div class="col-3" v-for="movie in group" :key="movie.id">
               <button class="btn btn-outline-dark">
                 <router-link
-                  :to="{ name: 'MovieDetail', params: { id: movie.id } }"
+                  :to="{ name: 'MovieDetail', params: {'id': movie.id } }"
                 >
                   <img
                     :src="getImageUrl(movie.poster_path)"
@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 h6 {
   color: white;
 }

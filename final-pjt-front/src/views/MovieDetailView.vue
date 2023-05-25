@@ -23,7 +23,7 @@
                 <img id="movie-star" src="@/assets/star.png" />
               </div>
             </div>
-            <p>좋아요개수: {{ movie_user_like?.length }}</p>
+            <p>좋아요개수: {{ like_movies?.length }}</p>
             <button @click="likeMovie(movie.id)">좋아욥</button>
             <br />
             <div class="movie-detail-overview-header">줄거리</div>
@@ -50,7 +50,6 @@
           </div>
           <div class="movie-detail-lower">
             <div class="movie-youtube-area">
-
               <hr />
               <form
                 @submit.prevent="createComment"
@@ -60,11 +59,16 @@
                   v-model="comment"
                   placeholder="이 영화를 한 줄로 표현한다면?"
                 ></b-form-input>
-                <input type="submit" id="submit" />
+                <input type="submit" id="submit" class="submitBtn" />
               </form>
             </div>
-            <div v-for="comment in movieComment" :key="comment.id">
+            <div
+              class="movieComment"
+              v-for="comment in movieComment"
+              :key="comment.id"
+            >
               <p v-if="comment.movie === movie.id">{{ comment.content }}</p>
+              <button @click="commentDelete(comment.id)">삭제</button>
             </div>
           </div>
         </div>
@@ -101,13 +105,21 @@ import { mapState } from "vuex";
 
 const API_URL = "https://api.themoviedb.org/3/movie";
 const COMMENT_URL = "http://127.0.0.1:8000/api/v1";
-const HOME_URL = "http://127.0.0.1:8000";
 
 export default {
   name: "MovieDetail",
   created() {
     this.getMovieDetail();
     this.getComment();
+    // this.$store.dispatch('fetchMovieLikes');
+    const token = this.token;
+    const userId = this.user_info[0].user_id;
+    const movieId = this.id;
+    const payload = { token, userId, movieId };
+    this.$store.dispatch("getLikeMovie", payload);
+  },
+  props: {
+    id: Number,
   },
   data() {
     return {
@@ -121,10 +133,12 @@ export default {
   computed: {
     ...mapState(["token"]),
     ...mapState(["user_info"]),
+    ...mapState(["like_movies"]),
     isLogin() {
       return this.$store.getters.isLogin; // 로그인 여부
     },
   },
+
   methods: {
     getMovieDetail() {
       axios({
@@ -140,11 +154,13 @@ export default {
           console.log(err);
         });
     },
+
     getImageUrl(posterPath) {
       if (posterPath) {
         return "https://image.tmdb.org/t/p/w220_and_h330_face/" + posterPath;
       }
     },
+
     getVideo() {
       const videoUrl = `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=a51700c7b5c0eac2db0ce7a959dcc750`;
 
@@ -162,6 +178,7 @@ export default {
           console.log(err);
         });
     },
+
     createComment() {
       const content = this.comment;
       const token = this.token;
@@ -190,61 +207,52 @@ export default {
           console.log(user_id);
         });
     },
-    getComment() {
+    commentDelete(commentId) {
+      //console.log(commentId);
+      const token = this.token;
       axios({
-        method: "get",
-        url: `${COMMENT_URL}/movies/${this.$route.params.id}/comments/`,
+        method: "delete",
+        url: `${COMMENT_URL}/movies/comments/${commentId}`,
+        data: { comment_pk: commentId, movie_pk: this.$route.params.id },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-        .then((res) => {
-          console.log("조찬익", res);
-          this.movieComment = res.data.filter(
-            (comment) => comment.movie === this.movie.id
+        .then(() => {
+          console.log("삭제완료!");
+          this.movieComment = this.movieComment.filter(
+            (comment) => comment.id !== commentId
           );
         })
         .catch((err) => {
           console.log(err);
         });
     },
+
     likeMovie(movieId) {
       const token = this.token;
       const userId = this.user_info[0].user_id;
-      console.log(movieId);
-      axios({
-        method: "post",
-        url: `${HOME_URL}/api/v1/movies/${movieId}/likes/`,
-        data: {
-          userId,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(() => {
-          console.log("커뮤니티 좋아요가 성공적으로 등록되었습니다.");
-          // 로컬에서 community_user_like 리스트 업데이트
-          this.fetchMovieLikes(movieId);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const mbtis = this.user_info[0].mbtis;
+      const payload = {
+        token,
+        userId,
+        mbtis,
+        movieId,
+      };
+      console.log(payload);
+      this.$store.dispatch("likeMovies", payload);
     },
-    fetchMovieLikes(movieId) {
-      const token = this.token;
+
+    getComment() {
       axios({
         method: "get",
-        url: `${HOME_URL}/api/v1/movies/${movieId}/`,
-        data: {
-          movie_pk: movieId,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        url: `${COMMENT_URL}/movies/${this.$route.params.id}/comments/`,
       })
         .then((res) => {
-          //서버에서 받아온 좋아요 개수 업데이트
-          console.log("여기까지?");
-          // console.log(res.data)
-          this.movie_user_like = res.data.movie_user_like;
+          //console.log("조찬익", res);
+          this.movieComment = res.data.filter(
+            (comment) => comment.movie === this.movie.id
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -325,5 +333,13 @@ export default {
 
 .movie-youtube-area {
   font-size: 32px;
+}
+
+.submitBtn {
+  margin: 20px;
+}
+
+.movieComment {
+  margin: 15px;
 }
 </style>

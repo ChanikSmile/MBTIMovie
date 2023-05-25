@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .review-title {
   cursor: pointer;
 }

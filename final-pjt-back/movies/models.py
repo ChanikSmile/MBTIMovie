@@ -8,8 +8,7 @@ class Genre(models.Model):
 
 
 class Movie(models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    movie_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
+    movie_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies', blank=True)
     title = models.CharField(max_length=100)
     overview = models.TextField()
     release_date = models.DateTimeField()
@@ -25,6 +24,11 @@ class Movie(models.Model):
     adult = models.TextField()
     genre_check = models.ManyToManyField(Genre, related_name='genre_movies')
     # movie_id = models.IntegerField()
+    s_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='s_like_movies', blank=True)
+    n_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='n_like_movies', blank=True)
+    t_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='t_like_movies', blank=True)
+    f_user_like = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='f_like_movies', blank=True)
+
     
 class Comment(models.Model):
     content = models.CharField(max_length=100)
