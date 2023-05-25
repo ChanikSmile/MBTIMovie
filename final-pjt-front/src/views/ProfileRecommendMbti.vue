@@ -1,37 +1,36 @@
 <template>
-    <div>
-      <div class="card">
-        {{ movie }}
+  <div>
+    <div class="card">
+      <router-link :to="{ name: 'MovieDetail', params: { id: movie.id } }">
         <img :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" class="img-fluid image zoom">
-      </div>
-      <!-- <div slot="viewport" class="flicking-pagination"></div> -->
+      </router-link>
     </div>
-  </template>
+  </div>
+</template>
     
-  <script>
-  
-    export default {
-      name: "ProfileRecommendMbti",
-      props: {
-        movie: {type: Object,
-        },
+<script>
+  export default {
+    name: "ProfileRecommendMbti",
+    props: {
+      movie: {type: Object,
       },
-      data() {
-        return {
-          toggle: false,
-        }
+    },
+    data() {
+      return {
+        toggle: false,
+      }
+    },
+    methods: {
+      openModal() {
+        // console.log("hi")
+        this.toggle = !this.toggle
       },
-      methods: {
-        openModal() {
-          // console.log("hi")
-          this.toggle = !this.toggle
-        }
-      },
+    },
+  }
+
+</script>
     
-    }
-  </script>
-    
-  <style scoped>
+<style scoped>
   /* @import "~@egjs/flicking-plugins/dist/arrow.css"; */
     .card .image {
       height: 350px;
@@ -47,4 +46,4 @@
     .zoom:hover {
       transform: scale(1.2);
     }
-  </style>
+</style>

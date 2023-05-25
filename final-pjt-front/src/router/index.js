@@ -9,11 +9,17 @@ import CommunityDetailView from '../views/CommunityDetailView.vue'
 import CommunityCreateView from '../views/CommunityCreateView.vue'
 import MovieDetailView from '../views/MovieDetailView.vue'
 import GenreListView from '../views/GenreListView.vue'
+import NotFound404 from '@/views/NotFound404'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/404',
+    name: 'NotFound404',
+    component: NotFound404,
+  },
   {
     path: '/login',
     name: 'login',
@@ -55,10 +61,14 @@ const routes = [
     component: CommunityCreateView
   },
   {
-    path: '/:id',
+    path: '/movies/:id',
     name: 'MovieDetail',
     component: MovieDetailView,
     props: true
+  },
+  {
+    path: '*', // 위에 해당하지 않는 모든 것..
+    redirect: '/404',
   }
 ]
 

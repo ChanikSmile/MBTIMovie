@@ -67,13 +67,6 @@ def create_comment(request, movie_pk):
             serializer.save(movie=movie, user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['DELETE'])
-def delete_comment(request, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    if request.method == "DELETE":
-        comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET', 'POST'])
 def community_list(request):
     if request.method == "GET":

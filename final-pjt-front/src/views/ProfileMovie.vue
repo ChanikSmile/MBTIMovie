@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="card">
-      <img :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" class="img-fluid image zoom">
+    <div class="card" >
+      <router-link :to="{ name: 'MovieDetail', params: { id: movie.id } }">
+        <img :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" class="img-fluid image zoom">
+      </router-link>
     </div>
-    <!-- <div slot="viewport" class="flicking-pagination"></div> -->
   </div>
 </template>
   
@@ -24,7 +25,7 @@
       openModal() {
         // console.log("hi")
         this.toggle = !this.toggle
-      }
+      },
     },
   
   }

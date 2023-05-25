@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="dark">
-      <router-link style="text-decoration: none; color: inherit" to="/movie">
+      <b-navbar-brand href="#">
         <img
           src="./assets/Persona.png"
           alt="로고 이미지"
           style="width: 150px; height: 150px"
-        />
-      </router-link>
+      /></b-navbar-brand>
+
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -54,14 +54,6 @@
                 >프로필 | </router-link
               >
             |
-            <b-dropdown-item variant="light">
-              <router-link
-                v-if="isLogin"
-                style="text-decoration: none; color: inherit"
-                to="/profile"
-                >프로필 |
-              </router-link></b-dropdown-item
-            >
             <b-dropdown-item variant="light">
               <router-link
                 v-if="!isLogin"
