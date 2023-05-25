@@ -67,30 +67,23 @@
         <a class="dropdown-item" @click="sortBtn(10770, 'TV 영화')">TV 영화</a>
       </button>
     </div>
-    <hr />
-    <div v-if="sortBtn" class="main">
+
+    <div v-if="sortBtn">
       <template v-if="genres.length">
-        <div class="row row-cols-1 row-cols-md-3 g-4 sub">
+        <div class="card-group">
           <div v-for="genre in genres" :key="genre.id">
-            <div class="col main">
-              <div
-                class="card"
-                style="width: 400px; height: 450px; margin: 50px"
+            <div class="card">
+              <router-link
+                :to="{ name: 'MovieDetail', params: { id: genre.id } }"
               >
-                <router-link
-                  style="text-decoration: none; color: inherit"
-                  :to="{ name: 'MovieDetail', params: { id: genre.id } }"
-                >
-                  <img
-                    :src="getImageUrl(genre.poster_path)"
-                    class="card-img-top"
-                    alt="이미지를 표시할 수 없습니다."
-                    style="width: 100%; height: 450px"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title">{{ genre.title }}</h5>
-                  </div>
-                </router-link>
+                <img
+                  :src="getImageUrl(genre.poster_path)"
+                  class="card-img-top"
+                  alt="이미지를 표시할 수 없습니다."
+                />
+              </router-link>
+              <div class="card-body">
+                <h5 class="card-title">{{ genre.title }}</h5>
               </div>
             </div>
           </div>
@@ -102,17 +95,6 @@
         </h3>
       </template>
     </div>
-          <div style="display: flex; justify-content: center; margin: 50px">
-            <button
-              type="button"
-              @click="appendGenre()"
-              :disabled="this.dataFull === true"
-              :class="{ disabled: dataFull }"
-              style="justify-content: center"
-            >
-              더 보기 ({{ cntGenre }}/{{ totalGenre }})
-            </button>
-          </div>
   </div>
 </template>
 
@@ -125,12 +107,8 @@ export default {
   data() {
     return {
       movies: {},
-      genreAll: {},
-      genres: [],
+      genres: {},
       movie_genre: "",
-      totalGenre: 0,
-      cntGenre: 6,
-      dataFull: false,
     };
   },
   created() {
@@ -151,45 +129,13 @@ export default {
         method: "get",
         url: `${API_URL}/${num}/sort`,
       }).then((res) => {
-        //console.log(res.data);
-        this.genreAll = res.data;
-        let data = [];
-        for (var i = 0; i < this.cntGenre; i++) {
-          data.push(res.data[i]);
-        }
-        //console.log(data)
-        this.genres = data;
-        this.totalGenre = res.data.length;
-        console.log(this.totalGenre);
+        console.log(res.data);
+        this.genres = res.data;
       });
-    },
-    appendGenre() {
-      if (this.cntGenre < this.totalGenre) {
-        this.cntGenre += 6;
-        let data = [];
-        for (var i = 0; i < this.cntGenre; i++) {
-          data.push(this.genreAll[i]);
-        }
-        this.genres = data;
-      } else {
-        this.dataFull = true;
-        alert("모든 데이터를 출력했습니다!");
-      }
     },
     sortBtn(num, movie_genre) {
       this.movie_genre = movie_genre;
-      axios({
-        method: "get",
-        url: `${API_URL}/${num}/sort`,
-      }).then((res) => {
-        this.genreAll = res.data;
-        let data = [];
-        for (let i = 0; i < this.cntGenre && i < this.genreAll.length; i++) {
-          data.push(this.genreAll[i]);
-        }
-        this.genres = data;
-        this.totalGenre = this.genreAll.length;
-      });
+      this.recommendMovie(num);
     },
     getImageUrl(posterPath) {
       if (posterPath) {
@@ -200,9 +146,4 @@ export default {
 };
 </script>
 
-<style>
-.main {
-  display: flex;
-  justify-content: center;
-}
-</style>
+<style></style>
